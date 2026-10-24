@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('user_id');
-            $table->foreignUlid('institution_id');
+            $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('institution_id')->constrained()->restrictOnDelete();
             $table->string('name');
-            $table->string('type');
+            $table->string('type'); // checking, savings, deposit, investment, loan
             $table->string('iban')->nullable();
-            $table->char('currency', 3);
-            $table->decimal('expected_return_pct')->nullable();
-            $table->date('opened_at');
-            $table->date('closed_at');
+            $table->char('currency', 3)->default('EUR');
+            $table->decimal('expected_return_pct', 6, 3)->nullable();
+            $table->date('opened_at')->nullable();
+            $table->date('closed_at')->nullable();
             $table->timestamps();
         });
     }

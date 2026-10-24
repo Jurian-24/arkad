@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('account_balance_snapshots', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('account_id');
+            $table->foreignUlid('account_id')->constrained()->cascadeOnDelete();
             $table->date('as_of_date');
-            $table->decimal('balance');
-            $table->decimal('contributions');
-            $table->string('source');
+            $table->decimal('balance', 14, 2);
+            $table->decimal('contributions', 14, 2)->default(0);
+            $table->string('source')->default('manual'); // manual, derived, import
             $table->timestamps();
+
+            $table->unique(['account_id', 'as_of_date']);
         });
     }
 

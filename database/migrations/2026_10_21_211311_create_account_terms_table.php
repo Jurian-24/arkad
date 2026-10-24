@@ -12,12 +12,13 @@ return new class extends Migration {
     {
         Schema::create('account_terms', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('account_id');
-            $table->decimal('principal');
-            $table->decimal('interest_rate_pct');
+            $table->foreignUlid('account_id')->unique()->constrained()->cascadeOnDelete();
+            $table->decimal('principal', 14, 2);
+            $table->decimal('interest_rate_pct', 6, 3);
             $table->date('start_date');
             $table->date('maturity_date')->nullable();
-            $table->boolean('auto_renew');
+            $table->string('compounding')->default('none'); // none, monthly, yearly
+            $table->boolean('auto_renew')->default(false);
             $table->timestamps();
         });
     }
