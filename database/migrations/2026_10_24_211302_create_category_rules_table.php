@@ -25,7 +25,7 @@ return new class extends Migration
 
         DB::statement('
             ALTER TABLE category_rules
-            ADD CONSTRAINT priority CHECK (x > 0 AND x <= 5)
+            ADD CONSTRAINT priority CHECK (priority > 0 AND priority <= 5)
         ');
     }
 

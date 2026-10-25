@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('user_tablet_progress', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->constrained()->nullOnDelete();
-            $table->foreignUlid('tablet_id')->constrained()->on('tablets_of_wisdom')->nullOnDelete();
-            $table->dateTime('unlocked_at');
-            $table->dateTime('read_at')->nullable();
+            $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('tablet_id')->constrained('tablets_of_wisdom')->cascadeOnDelete();
+            $table->timestamp('unlocked_at');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
+
+            // A user can unlock the same tablet only once.
+            $table->unique(['user_id', 'tablet_id']);
         });
     }
 
