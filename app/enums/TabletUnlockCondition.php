@@ -24,8 +24,8 @@ enum TabletUnlockCondition: string
 
             self::AccountsAdded => $user->accounts()->count() >= ($threshold ?? 1),
 
-            self::MonthsOfData => $user->transactions()
-                ->selectRaw("COUNT(DISTINCT strftime('%Y-%m', booked_at)) as months")
+            self::MonthsOfData => (int) $user->transactions()
+                ->selectRaw("COUNT(DISTINCT DATE_FORMAT(booked_at, '%Y-%m')) as months")
                 ->value('months') >= ($threshold ?? 1),
 
             self::RecurringConfirmed => $user->recurringPayments()->active()->exists(),
