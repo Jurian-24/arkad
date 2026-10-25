@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ImportStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,5 +43,21 @@ class ImportBatch extends Model
     public function rawBankTransactions(): HasMany
     {
         return $this->hasMany(RawBankTransaction::class);
+    }
+
+    /** Mark the batch as done and store how the rows were handled. */
+    public function markProcessed(int $imported, int $skipped): void
+    {
+        $this->update([
+            'status' => ImportStatus::Processed,
+            'rows_imported' => $imported,
+            'rows_skipped' => $skipped,
+            'imported_at' => now(),
+        ]);
+    }
+
+    public function markFailed(): void
+    {
+        $this->update(['status' => ImportStatus::Failed]);
     }
 }

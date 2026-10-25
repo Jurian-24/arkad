@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('goals', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('account_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignUlid('account_id')->nullable()->constrained()->nullOnDelete();
             $table->string('name');
-            $table->decimal('target_amount');
-            $table->char('currency')->default('EUR');
+            $table->decimal('target_amount', 14, 2);
+            $table->char('currency', 3)->default('EUR');
             $table->date('target_date')->nullable();
-            $table->string('enum'); // enum
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

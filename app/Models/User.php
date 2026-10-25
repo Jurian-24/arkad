@@ -36,6 +36,11 @@ class User extends Authenticatable
         return $this->hasMany(Account::class);
     }
 
+    public function allocationRules(): HasMany
+    {
+        return $this->hasMany(AllocationRule::class);
+    }
+
     public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
@@ -49,5 +54,37 @@ class User extends Authenticatable
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class);
+    }
+
+    public function debts(): HasMany
+    {
+        return $this->hasMany(Debt::class);
+    }
+
+    public function settings(): HasMany
+    {
+        return $this->hasMany(UserSetting::class);
+    }
+
+    public function tabletProgress(): HasMany
+    {
+        return $this->hasMany(UserTabletProgress::class);
+    }
+
+    /** Read one setting, with a fallback when it has not been set. */
+    public function setting(string $key, mixed $default = null): mixed
+    {
+        return $this->settings()->where('key', $key)->first()?->value ?? $default;
+    }
+
+    /** Create or update one setting. */
+    public function setSetting(string $key, mixed $value): void
+    {
+        $this->settings()->updateOrCreate(['key' => $key], ['value' => $value]);
     }
 }

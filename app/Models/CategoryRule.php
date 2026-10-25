@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\MatchField;
+use App\Enums\MatchType;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CategoryRule extends Model
 {
@@ -26,12 +29,12 @@ class CategoryRule extends Model
         ];
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }

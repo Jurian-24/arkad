@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignUlid('category_id')->nullable()
                 ->constrained()->nullOnDelete();
             $table->string('name');
-            $table->string('kind'); // expense, income, transfer
+            $table->string('kind'); // expense, income, internal_transfer
             $table->decimal('amount', 14, 2);
             $table->char('currency', 3)->default('EUR');
             $table->boolean('amount_is_variable')->default(false);

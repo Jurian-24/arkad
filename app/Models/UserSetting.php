@@ -12,8 +12,14 @@ class UserSetting extends Model
 
     protected $fillable = [
         'key',
-        'value'
+        'value',
     ];
+
+    protected function casts(): array
+    {
+        // value is a json column: strings, numbers, booleans and arrays all work.
+        return ['value' => 'json'];
+    }
 
     public function user(): BelongsTo
     {
